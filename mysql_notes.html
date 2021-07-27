@@ -158,8 +158,6 @@
 			</ul>
 			<p>
 			<code>GROUP BY</code>: <b>do the operations to data but in different group saperately.</b><br>eg.</br>
-			<code>
-			</code>
 			<pre><code>
 SELECT sum(songs.length) AS Duration,
 		release_year AS `Release Year`,
@@ -170,14 +168,14 @@ SELECT sum(songs.length) AS Duration,
 		ORDER BY Duration DESC
 		LIMIT 1;
 SELECT  b.`Band Name` AS Band,
-		count(s.id) AS `Number of Songs` FROM bands b, albums a, songs s
+	count(s.id) AS `Number of Songs` FROM bands b, albums a, songs s
         WHERE b.id = a.band_id and a.id = s.album_id
         GROUP BY a.band_id;
         
 SELECT  b.`Band Name` AS Band,
-		count(s.id) AS `Number of Songs`
+	count(s.id) AS `Number of Songs`
         FROM bands b
-		JOIN albums a ON b.id = a.band_id
+	JOIN albums a ON b.id = a.band_id
         JOIN songs s ON a.id = s.album_id
         GROUP BY b.id;
 			</code></pre>
