@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width" />
+		<title>Mysql_notes</title>
+	</head>
+	<style type="text/css" media="screen">
+	pre code {
+		display: block;
+		background: none;
+		background-color: #eee;
+		border: 1px solid #999;
+		white-space: pre;
+		-webkit-overflow-scrolling: touch;
+		overflow-x: scroll;
+		max-width: 10%;
+		min-width: 90%;
+		padding: 0;
+	}
+	</style>
+	<body>
+		<h1>Mysql Structure</h1>
+		<ol>
+			<li>database (schema)</li>
+			<li>table</li>
+			<li>column</li>
+			<ul>
+				<li>primary key</i>
+				<li>foreign key</li>
+				<li>symbol (constraint)</li>
+			</ul>
+		</ol>
+		<h1>Mysql Methods</h1>
+		<div>
+			<h2>Database manage</h2>
+			<p>
+			Login
+			<ul>
+				<li><code>mysql -u root -p</code>;</li>
+				<li><code>mysql -u root -D <i>database_name</i> -p</code>;</li>
+			</ul>
+			</p>
+			<p>
+			Before management, first choose database, normally use 
+			<ul>
+				<li><code>USE <i>database_name</i>;</code></li>switch between different databases
+				<li><code>SHOW databases;</code></li>show all databases
+				<li><code>SELECT database();</code></li>only shows current used database.
+			</ul>
+			</p>
+			<p>
+			Database management,
+			<ul>
+				<li><code>CREATE DATABASE [IF NOT EXIST] <i>database_name</i></code>;</li>
+				<li><code>DROP DATABASE [IF EXIST] <i>database_name</i></code>;</li>
+			</ul>
+			</p>
+		</div>
+		<div>
+			<h2>Table and Column manage</h2>
+			<p>
+			For Table:
+			<ul>
+				<li><code>CREATE TABLE [IF NOT EXIST] <i>table_name</i>()</code>;</li>
+				<li><code>DROP TABLE [IF EXIST] <i>table_name</i></code>;</li>
+				<li><code>TANCATE TABLE <i>table_name</i></code>;</li>
+			</ul>
+			For Column:
+			<li><code>ALTER TABLE <i>table_name</i></code></li>
+			operations:
+			<ul>
+				<li><code>ALTER TABLE <i>tbl_name</i><br>ADD [COLUMN] <i>column_name_1</i></code>;</li>
+				<li><code>ALTER TABLE <i>tbl_name</i><br>DROP [COLUMN] <i>column_name_1</i></code>;</li>
+				<li><code>ALTER TABLE <i>tbl_name</i><br>CHANGE [COLUMN] <i>column_name_1</i></code>;</li>
+				<li><code>ALTER TABLE <i>tbl_name</i><br>MODIFY <i>col_name type operation</i></code>;</li>
+				<li><code>ALTER TABLE <i>tbl_name</i><br>RENAME TO <i>new_column_name</i></code>;</li>
+			</ul>
+			<pre><code>
+			CREATE TABLE [IF NOT EXIST] <i>table_name</i>(
+			<i>column_name data_type(length)</i>
+			[NOT NULL]
+			[DEFAULT <i>value</i>]
+			[AUTO_INCREMENT]
+			<i>column_constraints</i>
+			PRIMARY KEY (<i>primary_key_names</i>),
+			[CONSTRAINT [<i>symbol</i>]] FOREIGN KEY (<i>foreign_key_names</i>)
+				REFERENCES <i>table_name</i> (<i>column_name</i>)
+				[ON UPDATE RESTRICT]
+				[ON DELETE CASCADE]
+			)[ENGINE=<i>engine_name</i>];
+			</code></pre>
+			<i>column_constraints</i> include: <code>PRIMARY KEY</code>, <code>FOREIGN KEY</code>, <code>INDEX</code>, <code>UNIQUE</code>, <code>CHECK</code>
+			and the <code>CONSTRAINT [<i>symbol</i>]</code> used to define the <code>FOREIGN KEY</code>
+			</p>
+		</div>
+		<div>
+			references:
+			<a href="https://dev.mysql.com/doc/refman/8.0/en/create-table.html">CREATE TABLE</a>
+		</div>
+
+		<div>
+			<h2>Data management</h2>
+			<p>
+			choose:
+			<ol>
+				<li><code>SELECT<br> <i>column_name_1</i> AS ...,
+						<br> <i>column_name_1</i> AS ... FROM <i>table_name</i>;</code></li>
+				<li><code>ALTER <i>table_name</i></code></li>
+				same as above
+				<li><code>INSERT INTO <i>tbl_name(column_names)</i> VALUES (...);</code></li>
+				<li><code>DELETE FROM <i>table_name</i>
+						<br>WHERE <i>col_name</i> ...
+						<br>LIMIT ...;</code></li>
+				<li><code>UPDATE <i>table_name</i><br> 
+						SET <i>col_name</i> = [REPLACE] <i>exper</i>
+					<br>WHERE <i>col_name</i> ...;</code></li>
+			</ol>
+			<p>
+			<b>
+				Notice: <code>DELETE</code> and <code>UPDATE</code>
+			</b>
+			<ol>
+				<li><code>WHERE <i>col</i></code> should be <b><code>PRIMARY KEY</code> eg. <code>WHERE id=1;</code></b> rather than others, else will error 1175</li>
+				<li>if want <i>col</i> is not <code>PRIMARY KEY</code>, eg.  <code>WHERE name = ...;</code> can use 'subquery', because the <br> <code>DELETE/UPDATE <br>SET/FROM<br> WHERE</code><br> clause can not take 'subtable' but can use 'subquery':<br><b><code>
+					</br>DELETE FROM bands
+					<br>	WHERE id IN (
+					<br>	SELECT id FROM
+					<br>(SELECT * FROM bands) AS bands_sub
+					<br>	WHERE `Band Name` = 'qz'
+					<br>);
+					</code></b>
+				</li>
+				<li>Before delete, if tables are related by <code>FOREIGN KEY</code>, this <code>FOREIGN KEY</code> must be <b><code>ON UPDATE/DELETE CASCADE</code></b>, if not first change it. a easy way is<br>
+					<b>
+						ALTER TABLE albums<br>
+					DROP FOREIGN KEY albums_ibfk_1;
+					<br></br>
+					ALTER TABLE albums<br>
+					ADD CONSTRAINT fk_band_id<br>
+					FOREIGN KEY (band_id) REFERENCES bands (id) ON DELETE CASCADE;
+					</b>
+				</li>
+			</ol>
+			</p>
+			aggregations:
+			<ul>
+				<li><code>(SELECT...) max(<i>column_name</i>) AS</code></li>
+				<li><code>(SELECT...) min(<i>column_name</i>) AS</code></li>
+				<li><code>(SELECT...) avg(<i>column_name</i>) AS</code></li>
+				<li><code>(SELECT...) count(<i>column_name</i>) AS</code></li>
+			</ul>
+			operations:
+			<ul>
+				<li><code>(SELECT...FROM) <i>table_name_1</i><br>JOIN <i>table_name_2</i> (ON)</code></li>
+				<li><code>ORDER BY <i>column_name</i> [ASC/DESC];</code></li>
+				<li><code>GROUP BY <i>column_name;</i></code></li>
+			</ul>
+			<p>
+			<code>GROUP BY</code>: <b>do the operations to data but in different group saperately.</b><br>eg.</br>
+			<code>
+			</code>
+			<pre><code>
+SELECT sum(songs.length) AS Duration,
+		release_year AS `Release Year`,
+		albums.name AS Name
+		FROM songs JOIN albums
+		ON albums.id = songs.album_id
+		GROUP BY songs.album_id
+		ORDER BY Duration DESC
+		LIMIT 1;
+SELECT  b.`Band Name` AS Band,
+		count(s.id) AS `Number of Songs` FROM bands b, albums a, songs s
+        WHERE b.id = a.band_id and a.id = s.album_id
+        GROUP BY a.band_id;
+        
+SELECT  b.`Band Name` AS Band,
+		count(s.id) AS `Number of Songs`
+        FROM bands b
+		JOIN albums a ON b.id = a.band_id
+        JOIN songs s ON a.id = s.album_id
+        GROUP BY b.id;
+			</code></pre>
+			</p>
+			conditions:
+			<ul>
+				<li><code>(JOIN) ON;</code></li>
+				<li><code>(WHERE) IN;</code></li>
+			</ul>
+			filters:
+			<ul>
+				<li><code>WHERE</code></li>
+				<li><code>LIMIT <i>number;</i></code></li>
+				<li><code>HAVING</code></li>
+			</ul>
+			<pre><code>
+			SELECT <i>column_name_1</i> FROM <i>table_name_1</i>
+			JOIN <i>table_name_2</i>
+			ON <i>some conditions</i>
+			WHERE <i>some conditions</i>
+			GROUP BY <i>column_name</i>
+			ORDER BY <i>column_name</i> [ASC/DESC]
+			LIMIT <i>number</i>;
+			</code></pre>
+			</p>
+		</div>
+	</body>
+</html>
