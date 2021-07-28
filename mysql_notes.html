@@ -147,7 +147,8 @@
 			<ul>
 				<li><code>(SELECT...) max(<i>column_name</i>) AS</code></li>
 				<li><code>(SELECT...) min(<i>column_name</i>) AS</code></li>
-				<li><code>(SELECT...) avg(<i>column_name</i>) AS</code></li>
+				<li>avg() ... GROUP BY: directly calculate the sum then average, same as use subquery</li>
+					<code>(SELECT...) avg(<i>column_name</i>) AS</code>
 				<li><code>(SELECT...) count(<i>column_name</i>) AS</code></li>
 			</ul>
 			operations:
@@ -201,6 +202,45 @@ SELECT  b.`Band Name` AS Band,
 			LIMIT <i>number</i>;
 			</code></pre>
 			</p>
+		</div>
+		<div>
+			<h1>Subquery</h1>
+			<h2>Derived Table</h2>
+			<ol>
+				<li>derived tables should have its alias: error 1248</li>
+				<code>FROM (subquery) AS <i>alias name</i></code>
+				<li>if want to references other table of same SELECT, use LATERAL, else error 1054</li><br>
+				<code>SELECT <i>col</i><br>
+					FROM <i>tbl_1</i>,<br>
+					LATERAL<br>
+					(subquery:include<i>tbl_1</i>) AS <i>alias</i><br>
+				</code>
+				<br>or use:</br>
+				<code>
+					SELECT <i>col</i><br>
+					FROM <i>tbl_1</i>,<br>
+					LATERAL<br>
+					(subquery:
+					SELECT <i>col_1, col_2</i><br>
+					FROM <i>tbl_1</i>) AS <i>alias</i>
+				</code>
+			</ol>
+			<h2>Restrictions</h2>
+			<ol>
+				<li>subquery vs. derived table:</li>
+				use outer query table:(can only use derived table)<br>
+				<br><code>
+					DELETE FROM/UPDATE/INSERT INTO <i>tbl</i><br>
+					WHERE ... (SELECT ... FROM <i>tbl</i>) <span style="color:DodgerBlue;">AS</span> <i>derived table name</i>
+				</code>
+				<li>n-tuple comparition:</li>
+				<br>
+				<code>(expr_1, ..., expr_n) [NOT] IN (subquery)</code><br>
+				<s style="color:tomato;"><code>(expr_1, ..., expr_n) [NOT] op {ALL|ANY|SOME} (subquery)</code></s><br>
+				<code><span style="color:DodgerBlue;">expr</span> [NOT] op {ALL|ANY|SOME} (subquery)</code>
+				<li><span style="color:Gold;">NO LIMIT</span></li>
+			</ol>
+			<h2>Optimizer</h2>
 		</div>
 	</body>
 </html>
