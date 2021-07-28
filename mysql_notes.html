@@ -225,7 +225,7 @@ SELECT  b.`Band Name` AS Band,
 					FROM <i>tbl_1</i>) AS <i>alias</i>
 				</code>
 			</ol>
-			<h2>Restrictions</h2>
+			<h2>Restrictions and Errors</h2>
 			<ol>
 				<li>subquery vs. derived table:</li>
 				use outer query table:(can only use derived table)<br>
@@ -239,6 +239,20 @@ SELECT  b.`Band Name` AS Band,
 				<s style="color:tomato;"><code>(expr_1, ..., expr_n) [NOT] op {ALL|ANY|SOME} (subquery)</code></s><br>
 				<code><span style="color:DodgerBlue;">expr</span> [NOT] op {ALL|ANY|SOME} (subquery)</code>
 				<li><span style="color:Gold;">NO LIMIT</span></li>
+				<li>incorrect column or row</li>
+				<i>error:1242 return row error, use IN/=ANY solve</i>
+				<br>
+				<s style="color:tomato;"><code>
+					SELECT * FROM <i>t1</i> WHERE <i>column1</i> = (SELECT <i>column1</i> FROM <i>t2</i>);
+					</code></s><br>
+				<code>
+					SELECT * FROM <i>t1</i> WHERE <i>column1</i> <span style="color:DodgerBlue;">IN/= ANY</span> (SELECT <i>column1</i> FROM <i>t2</i>);
+				</code>
+				<br>
+				<i>error:1241 subquery return col error, use IN or JOIN ... ON solve</i>
+				<br>&#10007<s style="color:tomato;"><code>
+					SELECT (SELECT <i>column1, column2</i> FROM <i>t2</i>) FROM <i>t1</i>;
+				</code></s>
 			</ol>
 			<h2>Optimizer</h2>
 		</div>
