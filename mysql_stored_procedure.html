@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width">
+		<title>Stored Procedure</title>
+	</head>
+	<style type="text/css" media="screen">
+		pre code {
+		display: block;
+		background: none;
+		background-color: #eee;
+		border: 1px solid #999;
+		white-space: pre;
+		-webkit-overflow-scrolling: touch;
+		overflow-x: scroll;
+		max-width: 10%;
+		min-width: 90%;
+		padding: 0;
+	}
+
+	</style>
+	<body>
+		<h1>Stored Procedure</h1>
+		<pre><code>
+			DELIMITER $$
+			CREATE PROCEDURE <i>proc_name</i>(
+				[IN] <i color="golden">in_param dtype[(length)]</i>
+				[OUT] <i color="skyblue">out_param dtype[(length)]</i>
+				[INOUT] <i color="orangered">inout_param dtype[(length)]</i>
+			)
+			BEGIN
+				DECLARE <i color="yellowgreen">inside_var dtype</i> [DEFAULT] <i>val</i>;
+				SELECT COUNT(*)
+				INTO <i color="yellowgreen">inside_var</i>/<i color="orangered">inout_param</i>/<i color="golden">in_param</i>
+				FROM ...
+				WHERE ... ;
+
+				IF <i>condition</i> THEN
+				<i>statements</i>;
+				ELSEIF <i>elseif-condition</i> THEN
+				<i>elseif-statements</i>;
+				  ...
+				ELSE
+				<i>else-statements</i>;
+				END IF;
+
+				[<i>label</i>]: LOOP/REPEAT 
+				   ...
+					-- terminate the loop
+					IF <i>condition</i> THEN
+						LEAVE [<i>label</i>];
+					END IF;
+				   ...
+					-- only used in REPEAT statement
+					UNTIL <i>repeat_finish</i>
+				END LOOP/REPEAT;
+
+
+				SELECT <i color="yellowgreen">inside_var</i>
+			END
+			$$
+			DELIMITER ;
+		</code></pre>
+
+		<br>
+		<code>
+			DROP PROCEDURE [IF EXISTS] <i>stored_procedure_name</i>;
+		</code>
+		</br>
+		<br>
+		<code>
+			SHOW PROCEDURE STATUS [LIKE <i>'pattern'</i> | WHERE <i>search_condition</i>]
+		</code></br>
+		<h1>Stored Function</h1>
+	</body>
+</html>
