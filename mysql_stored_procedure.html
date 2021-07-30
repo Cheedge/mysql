@@ -69,14 +69,31 @@
 		</code></pre>
 
 		<br>
-		<code>
+		<pre><code>
 			DROP PROCEDURE [IF EXISTS] <i>stored_procedure_name</i>;
-		</code>
+		</code></pre>
 		</br>
 		<br>
-		<code>
+		<pre><code>
 			SHOW PROCEDURE STATUS [LIKE <i>'pattern'</i> | WHERE <i>search_condition</i>]
-		</code></br>
+		</code></pre></br>
 		<h1>Stored Function</h1>
+		<pre><code>
+		DELIMITER $$
+
+		CREATE FUNCTION <i>function_name</i>(
+			<i>param1,
+			param2</i>,
+			...
+		)
+		RETURNS datatype
+		[NOT] DETERMINISTIC
+		BEGIN
+			-- <i>statements</i>
+		END $$
+
+		DELIMITER ;
+		</code>
+		</pre>
 	</body>
 </html>
