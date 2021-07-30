@@ -4,6 +4,9 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width">
 		<title>Stored Procedure</title>
+		<link rel="stylesheet" href="/home/sharma/highlight/styles/atom-one-dark.min.css">
+		<script src="/home/sharma/highlight/highlight.min.js"></script>
+		<script>hljs.highlightAll();</script>
 	</head>
 	<style type="text/css" media="screen">
 		pre code {
@@ -14,27 +17,29 @@
 		white-space: pre;
 		-webkit-overflow-scrolling: touch;
 		overflow-x: scroll;
-		max-width: 10%;
-		min-width: 90%;
+		max-width: 30%;
+		min-width: 60%;
 		padding: 0;
 	}
 
 	</style>
 	<body>
 		<h1>Stored Procedure</h1>
-		<pre><code>
+		<pre><code class="language-sql">
 			DELIMITER $$
 			CREATE PROCEDURE <i>proc_name</i>(
-				[IN] <i color="golden">in_param dtype[(length)]</i>
-				[OUT] <i color="skyblue">out_param dtype[(length)]</i>
-				[INOUT] <i color="orangered">inout_param dtype[(length)]</i>
+				[IN] <i style="color:gold">in_param</i> <i>dtype[(length)]</i>
+				[OUT] <i style="color:skyblue">out_param</i> <i>dtype[(length)]</i>
+				[INOUT] <i style="color:orangered">inout_param</i> <i>dtype[(length)]</i>
 			)
 			BEGIN
-				DECLARE <i color="yellowgreen">inside_var dtype</i> [DEFAULT] <i>val</i>;
+				DECLARE <i style="color:yellowgreen">inside_var dtype</i> [DEFAULT] <i>val</i>;
 				SELECT COUNT(*)
-				INTO <i color="yellowgreen">inside_var</i>/<i color="orangered">inout_param</i>/<i color="golden">in_param</i>
+				INTO <i style="color:yellowgreen">inside_var</i>/<i style="color:orangered">inout_param</i>/<i style="color:gold">in_param</i>
 				FROM ...
 				WHERE ... ;
+
+				SET <i style="color:yellowgreen">inside_var</i> = ...;
 
 				IF <i>condition</i> THEN
 				<i>statements</i>;
