@@ -4,6 +4,7 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
 		<title>Mysql_notes</title>
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 	</head>
 	<style type="text/css" media="screen">
 	.notice_green{
@@ -41,7 +42,7 @@
 			</ul>
 		</ol>
 		<h1>Mysql Methods</h1>
-		<div>
+		<div class="container">
 			<h2>Database manage</h2>
 			<p>
 			Login
@@ -66,7 +67,7 @@
 			</ul>
 			</p>
 		</div>
-		<div>
+		<div class="container">
 			<h2>Table and Column manage</h2>
 			<p>
 			For Table:
@@ -103,12 +104,12 @@
 			and the <code>CONSTRAINT [<i>symbol</i>]</code> used to define the <code>FOREIGN KEY</code>
 			</p>
 		</div>
-		<div>
+		<div class="container">
 			references:
 			<a href="https://dev.mysql.com/doc/refman/8.0/en/create-table.html">CREATE TABLE</a>
 		</div>
 
-		<div>
+		<div class="container">
 			<h2>Data management</h2>
 			<p>
 			choose:
@@ -173,25 +174,25 @@
 			<code class="notice_txt">GROUP BY ... WITH ROLLUP</code> and <code class="notice_txt">GROUPING()</code><br> refert to <a href="https://dev.mysql.com/doc/refman/8.0/en/group-by-modifiers.html">Doc WITH ROLLUP</a>
 			<br>eg.</br>
 			<pre><code>
-SELECT sum(songs.length) AS Duration,
-		release_year AS `Release Year`,
-		albums.name AS Name
-		FROM songs JOIN albums
-		ON albums.id = songs.album_id
-		GROUP BY songs.album_id
-		ORDER BY Duration DESC
-		LIMIT 1;
-SELECT  b.`Band Name` AS Band,
-	count(s.id) AS `Number of Songs` FROM bands b, albums a, songs s
-        WHERE b.id = a.band_id and a.id = s.album_id
-        GROUP BY a.band_id;
-        
-SELECT  b.`Band Name` AS Band,
-	count(s.id) AS `Number of Songs`
-        FROM bands b
-	JOIN albums a ON b.id = a.band_id
-        JOIN songs s ON a.id = s.album_id
-        GROUP BY b.id;
+	SELECT sum(songs.length) AS Duration,
+			release_year AS `Release Year`,
+			albums.name AS Name
+			FROM songs JOIN albums
+			ON albums.id = songs.album_id
+			GROUP BY songs.album_id
+			ORDER BY Duration DESC
+			LIMIT 1;
+	SELECT  b.`Band Name` AS Band,
+		count(s.id) AS `Number of Songs` FROM bands b, albums a, songs s
+			WHERE b.id = a.band_id and a.id = s.album_id
+			GROUP BY a.band_id;
+			
+	SELECT  b.`Band Name` AS Band,
+		count(s.id) AS `Number of Songs`
+			FROM bands b
+		JOIN albums a ON b.id = a.band_id
+			JOIN songs s ON a.id = s.album_id
+			GROUP BY b.id;
 			</code></pre>
 			</p>
 			conditions:
@@ -216,7 +217,7 @@ SELECT  b.`Band Name` AS Band,
 			</code></pre>
 			</p>
 		</div>
-		<div>
+		<div class="container">
 			<h1>Subquery</h1>
 			<h2>Derived Table</h2>
 			<ol>
@@ -282,7 +283,7 @@ SELECT  b.`Band Name` AS Band,
 			references: <a href="https://dev.mysql.com/doc/refman/8.0/en/subquery-optimization-with-exists.html">Doc EXISTS of subquery</a>
 			</br>
 		</div>
-		<div>
+		<div class="container">
 			<h1>some statement for checking or others</h1>
 			<code>
 				SHOW ERRORS;<br>
