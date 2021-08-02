@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Mysql_index_notes</title>
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+	</head>
+	<body>
+		<h1>INDEX</h1>
+		<div id="container">
+			<h2>CREATE</h2>
+		<pre><code>
+		CREATE TABLE t(
+		   c1 INT PRIMARY KEY,
+		   c2 INT NOT NULL,
+		   c3 INT NOT NULL,
+		   c4 VARCHAR(10),
+		   INDEX (c2,c3) 
+		);
+		</code></pre>
+		<pre><code>
+		CREATE INDEX <i>idx_name</i> ON <i>tbl_name</i> (<i>col_list</i>)
+		</code></pre>
+		<h2>SHOW index</h2>
+		<pre><code>
+		SHOW INDEX/KEYS/INDEXS IN/FROM <i>table_name</i>
+		FROM/IN <i>database_name</i>;
+		</code></pre>
+		note: INDEX, KEYS, INDEXS can exchange, and here IN and FROM also can exchange.
+		<table class="table align-middle">
+		  <thead>
+			<tr>
+			  <th scope="col">table</th>
+			  <th scope="col">non_unique</th>
+			  <th scope="col">key_name</th>
+			  <th scope="col">seq_in_index</th>
+			  <th scope="col">col_name</th>
+			  <th scope="col">collation</th>
+			  <th scope="col">cardinality</th>
+			  <th scope="col">sub_part</th>
+			  <th scope="col">packed</th>
+			  <th scope="col">null</th>
+			  <th scope="col">idx_type</th>
+			  <th scope="col">comment</th>
+			  <th scope="col">idx_comment</th>
+			  <th scope="col">visible</th>
+			  <th scope="col">expr</th>
+			</tr>
+		  </thead>
+		  <tbody>
+			<tr>
+			  <th scope="row">tbl_name</th>
+			  <td>0</td>
+			  <td>idx_name</td>
+			  <td>0</td>
+			  <td>col_1</td>
+			  <td>A</td>
+			  <td>D</td>
+			  <td>null</td>
+			  <td>null</td>
+			  <td>YES</td>
+			  <td>BTREE</td>
+			  <td></td>
+			  <td></td>
+			  <td>NO</td>
+			</tr>
+			<tr class="align-bottom">
+			  <th scope="row">tbl_name</th>
+			  <td>0</td>
+			  <td>idx_name</td>
+			  <td>0</td>
+			  <td>col_2</td>
+			  <td>A</td>
+			  <td>D</td>
+			  <td>null</td>
+			  <td>null</td>
+			  <td>NO</td>
+			  <td>BTREE</td>
+			  <td></td>
+			  <td></td>
+			  <td>YES</td>
+			</tr>
+			<tr>
+			  <th scope="row">3</th>
+			  <td colspan="2">Larry the Bird</td>
+			  <td class="align-top">@twitter</td>
+			</tr>
+		  </tbody>
+		</table>
+
+		</div>
+	</body>
+</html>
