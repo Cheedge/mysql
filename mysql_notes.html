@@ -4,6 +4,9 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
 		<title>Mysql_notes</title>
+		<link rel="stylesheet" href="/home/sharma/highlight/styles/base16/gruvbox-dark-soft.min.css">
+		<script src="/home/sharma/highlight/highlight.min.js"></script>
+		<script>hljs.highlightAll();</script>
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 	</head>
 	<style type="text/css" media="screen">
@@ -165,10 +168,63 @@
 			</ul>
 			operations:
 			<ul>
-				<li><code>(SELECT...FROM) <i>table_name_1</i><br>JOIN <i>table_name_2</i> (ON)</code></li>
+				<li><code>(SELECT...FROM) <i>table_name_1</i><br>JOIN <i>table_name_2</i> (ON/USING)</code></li>
 				<li><code>ORDER BY <i>column_name</i> [ASC/DESC];</code></li>
 				<li><code>GROUP BY <i>column_name;</i></code></li>
 			</ul>
+			<p>
+			<h3>JOIN vs. UNION</h3>
+			<pre><code>
+			(t1)     (t2)
+			+----+   +----+
+			| id |   | id |
+			+----+   +----+
+			|  1 |   |  2 |
+			|  2 |   |  3 |
+			|  3 |   |  4 |
+			+----+   +----+
+			</code></pre>
+			use <code>UNION</code>
+			<pre><code>
+			SELECT id
+			FROM t1
+			UNION [ALL]
+			SELECT id
+			FROM t2;
+			</code></pre>
+			add <code>ALL</code> consider duplication (like (a)). without <code>ALL</code> will ignore duplication (like (b)).
+			<pre><code>
+			UNION result: (vertical)
+			(a)		   (b)
+			+----+		   +----+
+			| id |		   | id |
+			+----+		   +----+
+			|  1 |		   |  1 |
+			|  2 |		   |  2 |
+			|  3 |		   |  3 |
+			|  2 |		   |  4 |
+			|  3 |		   +----+
+			|  4 |
+			+----+
+			</code></pre>
+			use <code>JOIN</code>
+			<pre><code>
+			SELECT id
+			FROM t1 JOIN t2
+			USING(id)
+			</code></pre>
+			result:
+			<pre><code>
+			JOIN result: (horizontal)
+			+----+----+
+			| id | id |
+			+----+----+
+			|  2 |  2 |
+			|  3 |  3 |
+			+---+-----+
+			</code></pre>
+			</p>
+
 			<p>
 			<code>GROUP BY</code>: <b>do the operations to data but in different group separately.</b><br>
 			<code class="notice_txt">GROUP BY ... WITH ROLLUP</code> and <code class="notice_txt">GROUPING()</code><br> refert to <a href="https://dev.mysql.com/doc/refman/8.0/en/group-by-modifiers.html">Doc WITH ROLLUP</a>
@@ -197,7 +253,7 @@
 			</p>
 			conditions:
 			<ul>
-				<li><code>(JOIN) ON;</code></li>
+				<li><code>(JOIN) ON;</code> or <code>(JOIN) USING</code></li>
 				<li><code>(WHERE) IN;</code></li>
 			</ul>
 			filters:
@@ -224,20 +280,21 @@
 				<li>derived tables should have its alias: error 1248</li>
 				<code>FROM (subquery) AS <i>alias_name</i></code>
 				<li>if want to references other table of same SELECT, use LATERAL, else error 1054</li><br>
-				<code>SELECT <i>col</i><br>
-					FROM <i>tbl_1</i>,<br>
-					LATERAL<br>
-					(subquery:include<i>tbl_1</i>) AS <i>alias</i><br>
-				</code>
+				<pre><code>
+				SELECT <i>col</i>
+				FROM <i>tbl_1</i>,
+				LATERAL
+				(subquery:include<i>tbl_1</i>) AS <i>alias</i>
+				</code></pre>
 				<br>or use:</br>
-				<code>
-					SELECT <i>col</i><br>
-					FROM <i>tbl_1</i>,<br>
-					LATERAL<br>
-					(subquery:
-					SELECT <i>col_1, col_2</i><br>
-					FROM <i>tbl_1</i>) AS <i>alias</i>
-				</code>
+				<pre><code>
+				SELECT <i>col</i><br>
+				FROM <i>tbl_1</i>,<br>
+				LATERAL<br>
+				(subquery:
+				SELECT <i>col_1, col_2</i><br>
+				FROM <i>tbl_1</i>) AS <i>alias</i>
+				</code></pre>
 			</ol>
 			<h2>Restrictions and Errors</h2>
 			<ol>
