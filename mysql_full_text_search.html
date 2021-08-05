@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width">
+		<title>mysql notes</title>
+		<link rel="stylesheet" href="/home/sharma/highlight/styles/agate.min.css">
+		<script src="/home/sharma/highlight/highlight.min.js"></script>
+		<script>hljs.highlightAll();</script>
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+	</head>
+	<body>
+		<div class='container'>
+			<h1>FULL TEXT SEARCH</h1>	
+			<h2>CREATE/DROP</h2>
+			by <code>CREATE TABLE</code>
+			<pre><code>
+			CREATE TABLE table_name(
+			    column_list,
+			    ...,
+			    FULLTEXT (column1,column2,..)
+			);
+			</code></pre>
+			by <code>ALTER TABLE</code>
+			<pre><code>
+			ALTER TABLE table_name  
+			ADD FULLTEXT(column_name1, column_name2,...)
+			</code></pre>
+			by <code>CREATE FULLTEXT INDEX</code>
+			<pre><code>
+			CREATE FULLTEXT INDEX index_name
+			ON table_name(idx_column_name,...);
+			</code></pre>
+			<code>ALTER ... DROP</code>
+			<pre><code>
+			ALTER TABLE table_name
+			DROP INDEX index_name;
+			</code></pre>
+			<h2>Search</h2>
+			before search first add <code>FULLTEXT</code> index to columns.
+			<pre><code>
+			ALTER TABLE table_name  
+			ADD FULLTEXT(column_name1, column_name2,...)
+			</code></pre>
+			or
+			<pre><code>
+			CREATE FULLTEXT INDEX index_name
+			ON table_name(idx_column_name,...);
+			</code></pre>
+			<h3>Natural Language/BOOLEAN MODE/Query Expansion</h3>
+			use the FULLTEXT idx of column to match, by <strong><code>MATCH()</code></strong> and <strong><code>AGAINST()</code></strong>
+			<pre><code>
+			SELECT 
+				col_1, 
+			    idx_col_2 
+			FROM tbl 
+			WHERE 
+				MATCH(idx_col_2) 
+				AGAINST('strings1,strings2' IN NATURAL LANGUAGE MODE/IN BOOLEAN MODE/WITH QUERY EXPANSION);
+			</code></pre>
+			<h3>Boolean operators</h3>
+			more operation on search use boolean mode with operators (correspond to above <code>AGAINST('strings1, string2)</code> )
+			<table class="table">
+				<tr>
+					<th>Combination</th>
+					<th>Description</th>
+				</tr>
+				<tr>
+					<th>'a b c'</th>
+					<td>list of individual words 'a', 'b', 'c'</td>
+				</tr>
+				<tr>
+					<th>"a b c"</th>
+					<td>a phrase "a b c"</td>
+				</tr>
+				<tr>
+					<th>'a b'</th>
+					<td>contain 'a' or 'b' or 'a' 'b'</td>
+				</tr>
+				<tr>
+					<th>'+a +b'</th>
+					<td>include 'a' and 'b'</td>
+				</tr>
+				<tr>
+					<th>'+a b'</th>
+					<td>str include 'a' list firstly, then list str with 'b'</td>
+				</tr>
+				<tr>
+					<th>'+a -b'</th>
+					<td>include 'a', exclude 'b'</td>
+				</tr>
+				<tr>
+					<th>'+a ~b'</th>
+					<td>list str include 'a' first, lower rank str with 'b'</td>
+				</tr>
+				<tr>
+					<th>'+a +(&gtb &ltc)' </th>
+					<td>first rank 'ab' then rank 'ac'</td>
+				</tr>
+				<tr>
+					<th>'a*'</th>
+					<td>wildcard operator, find str begin with 'a'</td>
+				</tr>
+			</table>
+			<h3>Difference</h3>
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>Diff</th>
+						<th>IN NATURAL LANGUAGE MODE</th>
+						<th>IN BOOLEAN MODE</th>
+						<th>WITH QUERY EXPANSION</th>
+					</tr>
+				</thead>
+				<tbody>
+				<tr>
+					<th><code>MATCH() AGAINST('sql'...)</code></th>
+					<td>e.g. <i>'mysql ist gut'</i></td>
+					<td>e.g. <i>'mysql ist gut'</i></td>
+					<td>e.g. <i>'mysql ist gut'</i> also list e.g. <i>'... ist ...', '...gut...'</i></td>
+				</tr>
+				<tr>
+					<th>Notes</th>
+					<td>keywords should longer than 4 charactors</td>
+					<td>will ignore the search results more than 50%</td>
+					<td>when keywords are too short</td>
+				</tr>
+				</tbody>
+
+			</table>
+			<h2>ngram</h2>
+			refer to here <a href="https://www.mysqltutorial.org/mysql-ngram-full-text-parser/">NGRAM tutorial</a>
+			set ngram
+			<pre><code>
+			mysqld --ngram_token_size=1
+			</code></pre>
+			or in configuration file
+			<pre><code>
+			[mysqld]
+			ngram_token_size=1
+			</code></pre>
+			<code>CREATE</code> table with ngram
+			<pre><code>
+			FULLTEXT(...) WITH PARSER NGRAM
+			</code></pre>
+	</div>
+	</body>
+</html>
