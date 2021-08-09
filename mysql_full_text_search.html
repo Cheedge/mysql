@@ -55,8 +55,8 @@
 			    idx_col_2 
 			FROM tbl 
 			WHERE 
-				MATCH(idx_col_2) 
-				AGAINST('strings1,strings2' IN NATURAL LANGUAGE MODE/IN BOOLEAN MODE/WITH QUERY EXPANSION);
+			     MATCH(idx_col_2) 
+			     AGAINST('strings1,strings2' IN NATURAL LANGUAGE MODE/IN BOOLEAN MODE/WITH QUERY EXPANSION);
 			</code></pre>
 			<h3>Boolean operators</h3>
 			more operation on search use boolean mode with operators (correspond to above <code>AGAINST('strings1, string2)</code> )
