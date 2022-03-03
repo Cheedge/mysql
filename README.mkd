@@ -1,0 +1,5 @@
+1. create 10,000 rows data table
+2. make the procedure and function for this
+3. add index
+4. use explain to see under different situation what will happend(key, key_len, type, extra, etc.) when searching by using index or not.
+
