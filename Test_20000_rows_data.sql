@@ -158,27 +158,3 @@ DROP TABLE courses ;
 
 # 6. Modify rows:
 ALTER TABLE courses MODIFY name VARCHAR(30) NOT NULL;
-
-
-
-
-
-SHOW columns FROM crime_Berlin_year_TK_Graf;
-EXPLAIN SELECT District FROM crime_Berlin_year_TK_Graf
-WHERE `Year` = 2019;
-SELECT * FROM orderdetails o ;
-DESCRIBE orderdetails;
-SHOW variables LIKE "%slow%";
-SELECT @@slow_query_log_file;
-SHOW CREATE table customers ;
-DESCRIBE customers ;
-SELECT * FROM customers c ;
-EXPLAIN SELECT country FROM customers GROUP BY country;
-EXPLAIN SELECT salesRepEmployeeNumber FROM customers c ;
-USE crime;
-SELECT * FROM berlin_crime bc ;
-SHOW variables LIKE "%function%";
-SHOW variables LIKE "%optimizer%";
-SELECT @@optimizer_switch;
-SHOW table STATUS like "berlin_crime";
-SELECT * FROM information_schema.`COLUMNS` c WHERE TABLE_NAME = "songs";
