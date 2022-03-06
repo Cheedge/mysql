@@ -1,5 +1,26 @@
-1. create 10,000 rows data table
+Test_20000_rows)data.sql
+1. create 20,000 rows data table
 2. make the procedure and function for this
 3. add index
-4. use explain to see under different situation what will happend(key, key_len, type, extra, etc.) when searching by using index or not.
+
+EXPLAIN_TEST.sql
+1. use explain to see under different situation
+	* key_len
+	* type
+	* rows
+	* Extra
+	* VARIABLES
+
+Optimize.sql
+1. adjust diff VARIABLES
+2. check STATUS
+3. PROCESSLIST
+4. information_schema
+
+GROUP_ORDER_IN_EXISTS.sql
+1. GROUP
+2. ORDER
+3. IN&EXISTS
+4. teamers.txt is the data for GROUP test.
+
 
