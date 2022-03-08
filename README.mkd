@@ -1,5 +1,5 @@
 Test_20000_rows_data.sql
-1. create 20,000 rows data table
+1. create 20,000 rows data table(with PRIMARY KEY, FOREIGN KEY)
 2. make the procedure and function for this
 3. add index
 
